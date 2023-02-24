@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Portfolio
+Home
 {% endblock %}
 
 {% block main %}
-<b>hello</b>
+<h3>Drone Dashboard</h3>
+
+{% if code %}
+    Fleetman returned code <b>{{ code }}</b>.
+    <br>
+    {{ response }}
+{% endif %}
+
+<hr>    
 
 <form action="/" method="post">
     <div class="mb-3">

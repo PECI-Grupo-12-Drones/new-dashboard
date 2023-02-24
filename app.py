@@ -1,11 +1,12 @@
-import os
 import requests
 from flask import Flask, flash, redirect, render_template, request, session
+from http.client import responses
 
-PREFIX = "http://localhost:8001"
-
+headers = {"Accept": "application/json", "Content-Type": "application/json"}
 # Configure application
 app = Flask(__name__)
+app.secret_key = b'wquygduihgsyfutdyugaiusufdtyg'
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -17,5 +18,9 @@ def index():
     print(f"User input: {link}")
 
     # print(requests.get("http://localhost:8001/drone/drone01?data=info").text)
-    print(f"Result on request: {requests.get(link).text}")
-    return requests.get(link).text
+
+    response_api = requests.get(link, headers=headers) # talk with api
+    flash("Request sent", "success")
+    code = response_api.status_code
+    code = f"{code} {responses[code]}"
+    return render_template("index.html", code=code, response=response_api.json())
